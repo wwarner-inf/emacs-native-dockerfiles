@@ -9,24 +9,38 @@ same everywhere!
 
 Run directly from the image at dockerhub:
 
-	docker run -it --rm --name emacs \
+	cd build
+	./build.sh go cpp
+	docker run -it --rm --name emacs-go-cpp \
 	  -v$HOME/src:/root/src \
 	  -v$HOME/.gitconfig:/etc/gitconfig \
 	  -v$HOME/.ssh:/root/.ssh \
 	  -v$HOME/.aws:/root/.aws \
-	  wwarner/emacs-gopy:latest
+	  emacs-go-cpp
 
 Or build it locally
 
     git clone git@github.com:wwarner/emacs-native-dockerfiles.git
 	cd emacs-native-dockerfiles
-	make emacs-gopy
-	docker run -it --rm --name emacs \
+	make emacs-native
+	cd build
+	./build.sh go cpp
+	docker run -it --rm --name emacs-go-cpp \
 	  -v$HOME/src:/root/src \
 	  -v$HOME/.gitconfig:/root/.gitconfig \
 	  -v$HOME/.ssh:/root/.ssh \
 	  -v$HOME/.aws:/root/.aws \
-	  emacs-gopy
+	  emacs-go-cpp
+
+The idea is that the base can be combined with one or more modes
+(found in the `modes` directory). Modes here are good emacs
+configurations for a particular programming language, along with the
+binaries needed to run them. For example, if you're just writing Go,
+then build with `./build.sh go` and invoke with the directory mounts
+that suit you (discussed below). If you're writing `c++` and `python`,
+then build with `./build.sh cpp py`. `Build.sh` will construct a
+`Dockerfile` that installs the binaries needed for each mode, as well
+as its corresponding emacs configuration.
 
 ## Example Session
 
